@@ -1,6 +1,6 @@
 <div class="row sales layout-top-spacing">
 
-    {{-- @can('ver_clinica') --}}
+    @can('ver_despacho')
     <div class="col-sm-12">
 
         <div class="widget widget-chart-one">
@@ -69,17 +69,17 @@
         </div>
         <br>
         <div>
-           {{-- @can('editar_clinica') --}}
+            @can('editar_despacho')
            <button type="button" wire:click.prevent="Guardar()" class="btn btn-dark close-modal">
             Guardar
         </button>
-           {{-- @endcan --}}
+            @endcan
         </div>
 
 
 
     </div>
-    {{-- @endcan --}}
+    @endcan
 
 
    {{-- @include('livewire.permisos.form') --}}
