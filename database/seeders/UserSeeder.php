@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name'=> 'Luis Mario',
+            'ci' => '0104649843',
             'phone' => '2255181',
             'email' => 'admin@mail.com',
             'profile' => 'administrador',
@@ -24,6 +25,7 @@ class UserSeeder extends Seeder
         ]);
         User::create([
             'name'=> 'joaquin valdivieso',
+            'ci' => '0151349843',
             'phone' => '2255181',
             'email' => 'joaquis@mail.com',
             'profile' => 'administrador',
@@ -32,6 +34,7 @@ class UserSeeder extends Seeder
         ]);
         User::create([
             'name'=> 'ximena chhocho',
+            'ci' => '0103844494',
             'phone' => '2255181',
             'email' => 'ximena@mail.com',
             'profile' => 'empleado',
