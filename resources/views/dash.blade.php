@@ -1,11 +1,12 @@
 @extends('layouts.theme.app')
 @section('content')
 
-@can('ver_estadistica')
+{{-- @can('ver_estadistica') --}}
 
 <div id="dash" class="main-content">
 
-    <div class="row">
+    estadisticas
+    {{-- <div class="row">
         <div class="col-12">
             <div class="card card-statistics">
               <div class="card-body">
@@ -57,7 +58,7 @@
                       </p>
                       <h2>7500</h2>
                       <label class="badge badge-outline-danger badge-pill">16% decrease</label>
-                    </div> --}}
+                    </div>
                 </div>
               </div>
             </div>
@@ -149,8 +150,8 @@
 
 </div>
 
-
-@endcan
+{{--
+@endcan --}}
 
 
 
