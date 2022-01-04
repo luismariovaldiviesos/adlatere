@@ -33,7 +33,7 @@ class DespachoController extends Component
     public function render()
     {
         return view('livewire.despacho.component')->extends('layouts.theme.app')
-        ->section('content');;
+        ->section('content');
     }
 
     public function Guardar()
