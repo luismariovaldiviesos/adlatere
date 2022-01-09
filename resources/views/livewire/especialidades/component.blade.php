@@ -2,7 +2,7 @@
 
     <div class="col-sm-12">
 
-        @hasrole('empleado')
+        @hasrole('administrador')
 
 
 
