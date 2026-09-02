@@ -8,23 +8,9 @@ php artisan make:livewire Asuntos
 php artisan make:model Asunto
 
 
-TODO
 
-/// desde aqui ya todo esta hecho, faltan estos detealles :
+php artisan migrate:fresh --seed
 
-
-
-
-
-
-*
-* 
-* 
-
-
-
-
-// ESTO EN PRODUCCION Y DESPUES 
 
 
 
