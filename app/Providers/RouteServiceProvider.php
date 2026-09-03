@@ -37,25 +37,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
-        // FORCE LIVEWIRE OVERRIDES (Surgery Method)
-        try {
-            $uploadRoute = \Illuminate\Support\Facades\Route::getRoutes()->getByName('livewire.upload-file');
-            if ($uploadRoute) {
-                $uploadRoute->uses('App\Http\Controllers\Livewire\TenancyFileUploadHandler@handle');
-                // Force middleware reset and add ours
-                $uploadRoute->action['middleware'] = []; // Clear existing
-                $uploadRoute->middleware(['web', \App\Http\Middleware\SmartTenancyInit::class]);
-            }
 
-            $previewRoute = \Illuminate\Support\Facades\Route::getRoutes()->getByName('livewire.preview-file');
-            if ($previewRoute) {
-                $previewRoute->uses('App\Http\Controllers\Livewire\TenancyFilePreviewHandler@handle');
-                $previewRoute->action['middleware'] = []; // Clear existing
-                $previewRoute->middleware(['web', \App\Http\Middleware\SmartTenancyInit::class]);
-            }
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Failed to override Livewire routes: ' . $e->getMessage());
-        }
     }
 
     /**

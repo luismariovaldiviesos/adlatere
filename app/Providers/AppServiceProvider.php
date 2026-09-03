@@ -53,43 +53,7 @@ class AppServiceProvider extends ServiceProvider
             config(['app.url' => $currentRoot]); // FORCE app.url to match current domain
         }
 
-        // FIX: Remove the default global Livewire route name so our Tenant-specific route takes precedence
-        // We do this in 'booted' to ensure Livewire has already registered its routes
-        $this->app->booted(function () {
-            $router = app('router');
-            $routes = $router->getRoutes();
-            
-            // Iterate manually because getByName might fail if there are duplicates
-            foreach ($routes as $route) {
-                if ($route->getName() === 'livewire.upload-file') {
-                    // Check if the domain is NOT our dynamic binding (i.e. if it's the global one)
-                    // If my tenant route has dynamic domain, its domain property might be null or dynamic regex
-                    // The global one usually has no domain or central domain.
-                    
-                    // Simple hack: Rename ALL of them to fallback, then re-register ours? 
-                    // No, let's just log every occurrence.
-                    
-                    \Illuminate\Support\Facades\Log::info("Renamer: Found route named 'livewire.upload-file'. Domain: " . ($route->getDomain() ?? 'None'));
-                    
-                    // Check if the route is a TENANT route by checking its middleware
-                    $middlewares = $route->gatherMiddleware();
-                    $isTenantRoute = false;
-                    foreach ($middlewares as $mw) {
-                        if (str_contains($mw, 'InitializeTenancyByDomain')) {
-                            $isTenantRoute = true;
-                            break;
-                        }
-                    }
 
-                    if (!$isTenantRoute) {
-                         \Illuminate\Support\Facades\Log::info("Renamer: Renaming GLOBAL route to fallback.");
-                         $route->name('livewire.upload-file.global_fallback');
-                    } else {
-                         \Illuminate\Support\Facades\Log::info("Renamer: Skipping TENANT route.");
-                    }
-                }
-            }
-        });
 
     }
 }

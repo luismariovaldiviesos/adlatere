@@ -127,3 +127,7 @@ Route::post('/livewire/upload-file', [\Livewire\Controllers\FileUploadHandler::c
 Route::get('/livewire/preview-file/{filename}', [\Livewire\Controllers\FilePreviewHandler::class, 'handle'])
     ->name('livewire.preview-file')
     ->where('filename', '.*');
+
+    // Ruta para servir archivos media (mantiene compatibilidad con las vistas existentes)
+Route::get('/tenant-media', [\App\Http\Controllers\TenantAssetController::class, 'serve'])
+    ->name('tenant.media');
