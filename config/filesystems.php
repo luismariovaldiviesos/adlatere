@@ -70,6 +70,14 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/certificados'),
         ],
+        'actividades/originales' => [
+            'driver' => 'local',
+            'root'   => storage_path('app/actividades/originales'),
+        ],
+        'actividades/firmados' => [
+            'driver' => 'local',
+            'root'   => storage_path('app/actividades/firmados'),
+        ],
 
         'local' => [
             'driver' => 'local',
