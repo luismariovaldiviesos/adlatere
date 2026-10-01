@@ -95,6 +95,67 @@
         </div>
     </div>
 
+    <!-- ═══════════ SECCIÓN JUICIOS ═══════════ -->
+    <div class="intro-y grid grid-cols-12 gap-6 mt-8">
+        <div class="col-span-12">
+            <h3 class="text-lg font-bold text-theme-1">JUICIOS AÑO {{$year}}</h3>
+        </div>
+        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="intro-y box p-5 text-center">
+                <div class="text-3xl font-bold leading-8">{{$kpiJuicios}}</div>
+                <div class="text-base text-gray-600 mt-1">Total juicios</div>
+            </div>
+        </div>
+        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="intro-y box p-5 text-center">
+                <div class="text-3xl font-bold leading-8">{{$kpiAudiencias7}}</div>
+                <div class="text-base text-gray-600 mt-1">Audiencias próximos 7 días</div>
+            </div>
+        </div>
+        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="intro-y box p-5 text-center">
+                <div class="text-3xl font-bold leading-8">{{$kpiFirmasPendientes}}</div>
+                <div class="text-base text-gray-600 mt-1">Actividades pendientes de firma</div>
+            </div>
+        </div>
+        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="intro-y box p-5 text-center">
+                <div class="text-3xl font-bold leading-8">${{number_format($kpiPorCobrar, 2)}}</div>
+                <div class="text-base text-gray-600 mt-1">Honorarios por cobrar</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="intro-y grid grid-cols-12 gap-6 mt-5">
+        <div class="col-span-12 lg:col-span-6">
+            <div class="intro-y box">
+                <h4 class="p-3 text-center text-theme-1 font-bold">JUICIOS POR MES</h4>
+                <div id="chartJuiciosMonth"></div>
+            </div>
+        </div>
+        <div class="col-span-12 lg:col-span-6">
+            <div class="intro-y box">
+                <h4 class="p-3 text-center text-theme-1 font-bold">TOP 5 MATERIAS</h4>
+                <div id="chartJuiciosMateria"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="intro-y grid grid-cols-12 pt-5 gap-6">
+        <div class="col-span-12 lg:col-span-6">
+            <div class="intro-y box">
+                <h4 class="p-3 text-center text-theme-1 font-bold">JUICIOS POR ESTADO PROCESAL</h4>
+                <div id="chartJuiciosEstado"></div>
+            </div>
+        </div>
+        <div class="col-span-12 lg:col-span-6">
+            <div class="intro-y box">
+                <h4 class="p-3 text-center text-theme-1 font-bold">AUDIENCIAS PRÓXIMOS 14 DÍAS</h4>
+                <div id="chartAudiencias14"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Renovación (Livewire Controlled) -->
     @if($modalOpen)
     <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.5);">
