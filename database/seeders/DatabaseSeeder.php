@@ -40,9 +40,10 @@ class DatabaseSeeder extends Seeder
             $this->call(PermisosSeeder::class);
             $this->call(UserSeeder::class);
             $this->call(InicialSeeder::class);
-            $this->call(PermisosSistemaSeeder::class);
-            $this->call(AdlatereSeeder::class);
-            $this->call(JuiciosSeeder::class);
+             $this->call(PermisosSistemaSeeder::class);
+             $this->call(AdlatereSeeder::class);
+             $this->call(JuiciosSeeder::class);
+             $this->call(PerfilesSeeder::class);
      
 
     }
