@@ -34,6 +34,10 @@
             <img alt="logo" class="w-6" src="{{ asset('dist/images/logo.svg') }}">
             <span class="hidden xl:block text-white text-lg ml-3"><span class="font-medium">DASHBOARD</span> </span>
         </a>
+        <a href="{{ route('calendario') }}" class="side-menu">
+            <div class="side-menu__icon"> <i data-feather="calendar"></i> </div>
+            <div class="side-menu__title"> CALENDARIO  </div>
+        </a>
         @endcan
 
         
