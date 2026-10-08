@@ -83,7 +83,15 @@ class XmlFiles extends Component
                     $factura->fechaAutorizacion = Carbon::parse($sriStatus['fechaAutorizacion']);
                     $factura->numeroAutorizacion = $sriStatus['numeroAutorizacion'];
                     $factura->save();
-                    
+
+                    // Sincronizar TAMBIÉN la fila de seguimiento: si no, queda
+                    // como pendiente en Reprocesar aunque la factura esté aprobada
+                    $xmlFile->update([
+                        'estado' => 'autorizado',
+                        'directorio' => 'comprobantes/autorizados',
+                        'error' => null,
+                    ]);
+
                     $this->updateFact($factura);
                     $this->noty("¡Éxito! El comprobante ya estaba autorizado en el SRI. Se sincronizaron los datos localmente.");
                     return;
@@ -271,9 +279,8 @@ class XmlFiles extends Component
 
 
     public function updateFact(Factura $factura) {
-        $factura->fechaAutorizacion =  Carbon::now();
-        $factura->numeroAutorizacion =  $factura->claveAcceso;
-        $factura->save();
+        // Solo redirige al PDF. NO escribe numeroAutorizacion/fechaAutorizacion:
+        // esos valores solo los pone el SRI (con numero real) en los flujos de arriba.
         $url  =  route('descargar-pdf',['factura' => $factura->id]);
         $this->noty('FACTURA GENERADA  CORRECTAMENTE !!!!!!');
         return redirect()->to($url);
