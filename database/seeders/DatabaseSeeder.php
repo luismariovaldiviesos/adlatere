@@ -2,50 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+// Arranque limpio: SOLO sistema. El resto (materias, fases, unidades, settings,
+// usuarios, clientes, juicios, audiencias, consultas) entra por Excel con
+// php artisan carga:inicial. Datos demo solo en database/seeders/demo (dev).
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        // \App\Models\Category::factory(5)->create();
-        // \App\Models\Product::factory(20)->create();
-         //\App\Models\User::factory(20)->create();
-        // \App\Models\Customer::factory(20)->create();
-
-        // \App\Models\Order::factory(20)->create()->each(function($order){
-        //     $order->details()->create([
-        //         'order_id' => $order->id,
-        //         'product_id' => Product::all()->random()->id,
-        //         'quantity' => $order->items,
-        //         'price' => $order->total / $order->items
-        //     ]);
-        // });
-       
-            // Seeders para el INQUILINO (Tenant)
-            $this->call(PermisosSeeder::class);
-            $this->call(UserSeeder::class);
-            $this->call(InicialSeeder::class);
-             $this->call(PermisosSistemaSeeder::class);
-             $this->call(AdlatereSeeder::class);
-             $this->call(JuiciosSeeder::class);
-             $this->call(PerfilesSeeder::class);
-             $this->call(UsuariosSistemaSeeder::class);
-     
-
+        $this->call(SistemaCoreSeeder::class);
+        $this->call(PerfilesSeeder::class);
     }
 }

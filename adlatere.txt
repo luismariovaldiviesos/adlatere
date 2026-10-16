@@ -12,6 +12,14 @@ php artisan make:model Asunto
 php artisan migrate:fresh --seed
 
 
+# LOCAL
+php artisan carga:inicial datos_cliente.xlsx --validar
+php artisan carga:inicial datos_cliente.xlsx
+# SAAS
+php artisan tenants:run carga:inicial --tenants=X --argument=archivo=datos_cliente.xlsx --option=validar=1
+php artisan tenants:run carga:inicial --tenants=X --argument=archivo=datos_cliente.xlsx
+
+
 
 
 
