@@ -35,18 +35,22 @@
     </li>
     @endcan
     @can('menu_mis_consultas')
+    @if(auth()->user()->profile === 'Abogado')
     <li>
         <a href="{{ route('mis-consultas') }}" class="side-menu">
             <div class="side-menu__icon"> <i data-feather="clipboard"></i> </div>
             <div class="side-menu__title"> MIS CONSULTAS  </div>
         </a>
     </li>
+    @endif
     @endcan
     @can('menu_tareas')
     <li>
         <a href="{{ route('tareas') }}" class="side-menu">
             <div class="side-menu__icon"> <i data-feather="check-square"></i> </div>
-            <div class="side-menu__title"> TAREAS  </div>
+            <div class="side-menu__title">
+                @if(auth()->user()->profile === 'Abogado') Mis tareas @else Tareas @endif
+            </div>
         </a>
     </li>
     @endcan
