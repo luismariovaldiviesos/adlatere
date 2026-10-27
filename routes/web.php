@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\ActividadPdfController;
+use App\Http\Controllers\VerificacionActividadController;
 use App\Http\Livewire\Arqueos;
 use App\Http\Livewire\Asignar;
 use App\Http\Livewire\Cajas;
@@ -69,6 +71,9 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 });
 
+Route::get('/verificar-actividad/{actividad}', [VerificacionActividadController::class, 'show'])
+    ->name('actividades.verificar');
+
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
     
@@ -97,6 +102,8 @@ Route::middleware(['auth'])->group(function () {
     // Descargas PDF
     Route::get('/descargar-pdf/{factura}', [PdfController::class, 'pdfDowloader'])->name('descargar-pdf');
     Route::get('/descargar-arqueo/{arqueo}', [PdfController::class, 'arqueoDowloader'])->name('descargar-arqueo');
+    Route::get('/actividades/{actividad}/pdf-firmado', [ActividadPdfController::class, 'firmado'])
+        ->name('actividades.pdf.firmado');
     
     // Otros procesos y listados
     Route::get('reprocesar', XmlFiles::class)->name('reprocesar');
