@@ -23,6 +23,15 @@
             </li>
             @endcan
 
+            @can('menu_configuracion')
+            <li>
+                <a href="{{ route('mail.settings') }}" class="side-menu">
+                    <div class="side-menu__icon"> <i data-feather="mail"></i> </div>
+                    <div class="side-menu__title"> CORREO  </div>
+                </a>
+            </li>
+            @endcan
+
             @can('menu_roles')
             <li>
                 <a href="{{ route('roles') }}" class="side-menu">

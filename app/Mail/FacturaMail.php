@@ -37,16 +37,23 @@ class FacturaMail extends Mailable
              $body = "Estimado cliente, adjuntamos su Nota de Crédito electrónica. Gracias por su preferencia.";
         }
 
-        return $this
-            ->subject("$tipoDoc N° {$this->factura->secuencial} - " . config('mail.from.name'))
+        $mail = $this
+            ->from(config('mail.from.address'), config('mail.from.name'))
+            ->replyTo(config('mail.from.address'), config('mail.from.name'))
+            ->subject("$tipoDoc N�� {$this->factura->secuencial} - " . config('mail.from.name'))
             ->html($body)
             ->attach($this->pdfPath, [
                 'as' => "{$this->factura->secuencial}.pdf",
                 'mime' => 'application/pdf',
-            ])
-            ->attach($this->xmlPath, [
+            ]);
+
+        if ($this->xmlPath && file_exists($this->xmlPath)) {
+            $mail->attach($this->xmlPath, [
                 'as' => "{$this->factura->secuencial}.xml",
                 'mime' => 'application/xml',
             ]);
+        }
+
+        return $mail;
     }
 }

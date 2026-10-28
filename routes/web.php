@@ -90,6 +90,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('users', Users::class)->name('users');
     Route::get('reports', Reports::class)->name('reports');
     Route::get('settings', Settings::class)->name('settings');
+    Route::get('configuracion-correo', \App\Http\Livewire\MailSettings::class)
+        ->middleware('can:menu_configuracion')
+        ->name('mail.settings');
     Route::get('diarios', Diario::class)->name('diario');
     Route::get('cajas', Cajas::class)->name('cajas');
     Route::get('arqueos', Arqueos::class)->name('arqueos');
