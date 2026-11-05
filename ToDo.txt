@@ -50,6 +50,7 @@ Usuario: Tu correo completo (ej: tu_empresa@gmail.com).
 Contraseña: IMPORTANTE: No uses tu contraseña normal. 
 Debes ir a tu cuenta de Google -> Seguridad -> Verificación en 2 Pasos 
 -> Contraseñas de Aplicaciones. Genera una nueva y usa esa clave de 16 letras.
+iixz dlam khyh dsxk y tiburcio2409@gmail.com
 
 
 
