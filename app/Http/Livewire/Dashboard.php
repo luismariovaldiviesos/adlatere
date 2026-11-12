@@ -183,6 +183,13 @@ class Dashboard extends Component
             'url' => route('settings'),
             'action' => 'Configurar',
         ];
+          $items[] = [
+            'label' => 'Firma del despacho',
+            'description' => 'Certificado institucional o firma personal de un abogado.',
+            'done' => $firmaDespachoOk,
+            'url' => route('settings'),
+            'action' => 'Configurar',
+        ];
 
         if (!$this->esSaas) {
             $items[] = [
@@ -207,13 +214,7 @@ class Dashboard extends Component
             'action' => 'Ir a Unidades',
         ];
 
-        $items[] = [
-            'label' => 'Firma del despacho',
-            'description' => 'Certificado institucional o firma personal de un abogado.',
-            'done' => $firmaDespachoOk,
-            'url' => route('settings'),
-            'action' => 'Configurar',
-        ];
+      
 
         $this->configTotal = count($items);
         $this->configCompletos = collect($items)->where('done', true)->count();
