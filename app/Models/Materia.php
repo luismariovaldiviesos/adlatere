@@ -34,8 +34,14 @@ class Materia extends Model
     {
         return $this->hasMany(Procedimiento::class);
     }
-        public function especialidades()
-        {
-            return $this->hasMany(Especialidad::class);
-        }
+
+    public function unidades()
+    {
+        return $this->belongsToMany(Unidad::class, 'materia_unidad')->withTimestamps();
+    }
+
+    public function especialidades()
+    {
+        return $this->hasMany(Especialidad::class);
+    }
 }

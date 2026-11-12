@@ -108,13 +108,14 @@
     @php
         $hayJuicio = isset($juicio) && $juicio;
         $userId = auth()->id();
-        $esAdmin = auth()->user()->profile === 'Admin'
-            || (method_exists(auth()->user(), 'hasRole') && auth()->user()->hasRole('Admin'));
-        $esAbogado = $hayJuicio ? $juicio->abogados->contains(function($a) use ($userId) {
-            return (int) $a->id === (int) $userId
-                && str_contains(strtolower(trim($a->pivot->rol_en_juicio ?? '')), 'abogado')
-                && str_contains(strtolower(trim($a->pivot->rol_en_juicio ?? '')), 'patrocinador');
-        }) : false;
+        $esPerfilAbogado = auth()->user()->profile === 'Abogado'
+            || (method_exists(auth()->user(), 'hasRole') && auth()->user()->hasRole('Abogado'));
+        $esAbogado = $hayJuicio && $esPerfilAbogado
+            ? $juicio->abogados->contains(function($a) use ($userId) {
+                return (int) $a->id === (int) $userId
+                    && str_contains(strtolower(trim($a->pivot->rol_en_juicio ?? '')), 'abogado')
+                    && str_contains(strtolower(trim($a->pivot->rol_en_juicio ?? '')), 'patrocinador');
+            }) : false;
     @endphp
 
     {{-- LISTADO (solo si hay actividades) --}}
@@ -171,7 +172,7 @@
                                     </button>
                                 @endif
 
-                                <button type="button" wire:click="abrirDocumentosActividad({{ $act->id }})" class="btn btn-sm btn-info text-white whitespace-nowrap" title="Documentos de esta actividad ({{ $act->documentos->count() }})">
+                                <button type="button" wire:click="abrirDocumentosActividad({{ $act->id }})" class="btn btn-sm btn-info text-black whitespace-nowrap" title="Documentos de esta actividad ({{ $act->documentos->count() }})">
                                     <i data-lucide="folder-open" class="w-4 h-4 mr-1"></i> Documentos ({{ $act->documentos->count() }})
                                 </button>
                                 <button type="button" wire:click="descargarActividadPdf({{ $act->id }})" class="btn btn-sm btn-outline-danger whitespace-nowrap" title="Descargar en PDF">
@@ -188,8 +189,8 @@
                                 $estadoFirma = strtolower($act->estado_firma ?? 'no_requerida');
                                 $yaFirmada = $estadoFirma === 'firmada';
                                 $puedeFirmar = $esFirmable && !$yaFirmada
-                                    && ($esAdmin || $esAbogadoPatro)
-                                    && (auth()->user()->can('firmar_actividad') || $esAdmin || auth()->user()->puede_firmar_despacho);
+                                    && $esAbogadoPatro
+                                    && (auth()->user()->can('firmar_actividad') || auth()->user()->puede_firmar_despacho);
                             @endphp
 
                             @if($yaFirmada)

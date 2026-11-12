@@ -139,8 +139,8 @@ class Juicios extends Component
     public function mount()
     {
         $this->provincias = \App\Models\Provincia::orderBy('nombre', 'asc')->get();
-        // Solo cargamos Materias al inicio. Es una lista corta y fija.
-        $this->materias = Materia::orderBy('nombre', 'asc')->get();
+        // Las materias se cargan al seleccionar la unidad judicial.
+        $this->materias = [];
         $this->estados_procesales = EstadoProcesal::orderBy('id', 'asc')->get();
         $this->q_cantones = \App\Models\Canton::orderBy('nombre', 'asc')->get();
         
@@ -605,7 +605,18 @@ class Juicios extends Component
 
     public function updatedUnidadId($value)
     {
-        // La unidad cambia el universo de funcionarios, no la materia/procedimiento.
+        $this->materias = $value
+            ? Materia::whereHas('unidades', fn ($q) => $q->where('unidads.id', $value))
+                ->orderBy('nombre', 'asc')
+                ->get()
+            : [];
+
+        $this->materia_id = null;
+        $this->procedimiento_id = null;
+        $this->asunto_id = null;
+        $this->procedimientos = [];
+        $this->asuntos = [];
+
         $this->funcionario_id = null;
         $this->searchFuncionario = '';
         $this->funcionarios_list = [];
@@ -802,6 +813,7 @@ class Juicios extends Component
         $this->doc_vinculo_tipo = 'expediente';
         $this->cantones = [];
         $this->unidades_judiciales = [];
+        $this->materias = [];
         $this->procedimientos = [];
         $this->asuntos = [];
     }
@@ -839,7 +851,10 @@ class Juicios extends Component
             'provincia_id' => 'required|exists:provincias,id',
             'canton_id' => ['required', Rule::exists('cantones', 'id')->where('provincia_id', $this->provincia_id)],
             'unidad_id' => ['required', Rule::exists('unidads', 'id')->where('canton_id', $this->canton_id)],
-            'materia_id' => 'required|exists:materias,id',
+            'materia_id' => [
+                'required',
+                Rule::exists('materia_unidad', 'materia_id')->where('unidad_id', $this->unidad_id),
+            ],
             'procedimiento_id' => ['required', Rule::exists('procedimientos', 'id')->where('materia_id', $this->materia_id)],
             'asunto_id' => ['required', Rule::exists('asuntos', 'id')->where('procedimiento_id', $this->procedimiento_id)],
         ]), array_merge(Juicio::messages(), [
@@ -962,6 +977,11 @@ class Juicios extends Component
         $this->provincia_id = $juicio->unidadJudicial->canton->provincia_id ?? null;
         if($this->provincia_id) $this->cantones = \App\Models\Canton::where('provincia_id', $this->provincia_id)->orderBy('nombre', 'asc')->get();
         if($this->canton_id) $this->unidades_judiciales = \App\Models\Unidad::where('canton_id', $this->canton_id)->orderBy('nombre', 'asc')->get();
+        $this->materias = $this->unidad_id
+            ? Materia::whereHas('unidades', fn ($q) => $q->where('unidads.id', $this->unidad_id))
+                ->orderBy('nombre', 'asc')
+                ->get()
+            : [];
 
         $this->materia_id = $juicio->asunto->procedimiento->materia_id;
         $this->procedimiento_id = $juicio->asunto->procedimiento_id;
@@ -1169,6 +1189,11 @@ class Juicios extends Component
         $this->provincia_id = $juicio->unidadJudicial->canton->provincia_id ?? null;
         if($this->provincia_id) $this->cantones = \App\Models\Canton::where('provincia_id', $this->provincia_id)->orderBy('nombre', 'asc')->get();
         if($this->canton_id) $this->unidades_judiciales = \App\Models\Unidad::where('canton_id', $this->canton_id)->orderBy('nombre', 'asc')->get();
+        $this->materias = $this->unidad_id
+            ? Materia::whereHas('unidades', fn ($q) => $q->where('unidads.id', $this->unidad_id))
+                ->orderBy('nombre', 'asc')
+                ->get()
+            : [];
 
         $this->materia_id = $juicio->asunto->procedimiento->materia_id;
        $this->procedimientos = Procedimiento::where('materia_id', $this->materia_id)->orderBy('nombre', 'asc')->get();

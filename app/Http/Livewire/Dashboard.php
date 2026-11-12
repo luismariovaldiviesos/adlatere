@@ -24,6 +24,7 @@ class Dashboard extends Component
     public $year, $salesByMonth_Data = [], $top5Data =[], $weekSales_Data=[], $listYears=[], $salesByPaymentMethod_Data = [];
     // Estadísticas de juicios (sección propia, todos ven todo)
     public $kpiJuicios = 0, $kpiAudiencias7 = 0, $kpiFirmasPendientes = 0, $kpiPorCobrar = 0;
+    public $firmaPendientes = [];
     public $juiciosByMonth_Data = [], $juiciosByMateria_Data = [], $juiciosByEstado_Data = [], $audiencias14_Data = [], $audiencias14_Labels = [];
     public $tenantid;
     public $modalOpen = false;
@@ -195,6 +196,17 @@ class Dashboard extends Component
 
         $items = array_merge($items, $this->menusProcesales());
 
+        $materiasSinUnidad = \App\Models\Materia::whereDoesntHave('unidades')->count();
+        $items[] = [
+            'label' => 'Asignar unidades a materias',
+            'description' => $materiasSinUnidad > 0
+                ? $materiasSinUnidad . ' materia(s) sin unidad judicial. Asígnalas desde Sitios > Unidades para que aparezcan en carátula.'
+                : 'Todas las materias tienen al menos una unidad judicial.',
+            'done' => $materiasSinUnidad === 0,
+            'url' => route('unidades'),
+            'action' => 'Ir a Unidades',
+        ];
+
         $items[] = [
             'label' => 'Firma del despacho',
             'description' => 'Certificado institucional o firma personal de un abogado.',
@@ -312,7 +324,35 @@ class Dashboard extends Component
         $this->kpiAudiencias7 = Audiencia::where('estado', 'Programada')
             ->whereBetween('fecha_hora', [Carbon::now(), Carbon::now()->copy()->addDays(7)])
             ->count();
-        $this->kpiFirmasPendientes = Actividad::where('estado_firma', 'pendiente')->count();
+        $this->kpiFirmasPendientes = Actividad::where('estado_firma', 'pendiente')
+            ->whereHas('tipoActividad', fn ($q) => $q->where('es_firmable', true))
+            ->count();
+
+        $this->firmaPendientes = Actividad::with(['juicio', 'tipoActividad'])
+            ->where('estado_firma', 'pendiente')
+            ->whereHas('tipoActividad', fn ($q) => $q->where('es_firmable', true))
+            ->get()
+            ->groupBy('juicio_id')
+            ->map(function ($actividades) {
+                $primera = $actividades->first();
+                $codigo = $primera->juicio->cod_satje ?? ('#' . $primera->juicio_id);
+                $tipos = $actividades->pluck('tipoActividad.nombre')
+                    ->filter()
+                    ->unique()
+                    ->take(3)
+                    ->implode(', ');
+
+                return [
+                    'juicio_id' => $primera->juicio_id,
+                    'codigo' => $codigo,
+                    'total' => $actividades->count(),
+                    'tipos' => $tipos,
+                    'url' => '/juicios?juicio=' . $primera->juicio_id,
+                ];
+            })
+            ->values()
+            ->all();
+
         $pactado = (float) FinanzasJuicio::selectRaw('COALESCE(SUM(honorarios_totales),0) + COALESCE(SUM(gastos_extras),0) as t')->value('t');
         $cobrado = (float) PagosJuicio::where('estado', 'Aprobado')->sum('monto');
         $this->kpiPorCobrar = max(0, $pactado - $cobrado);

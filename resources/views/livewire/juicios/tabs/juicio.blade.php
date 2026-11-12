@@ -87,34 +87,49 @@
 
         <div class="col-span-12 md:col-span-4">
             <label class="form-label text-base font-bold">Materia</label>
-            <select wire:model='materia_id' class="form-select h-12 text-lg" {{ $soloLectura ? 'disabled' : '' }}>
-                <option value="">Seleccione Materia...</option>
+            <select wire:model='materia_id' class="form-select h-12 text-lg" {{ $soloLectura || empty($materias) ? 'disabled' : '' }}>
+                <option value="">{{ empty($materias) ? 'Seleccione una Unidad primero...' : 'Seleccione Materia...' }}</option>
                 @foreach($materias as $m)
                     <option value="{{ $m->id }}">{{ $m->nombre }}</option>
                 @endforeach
             </select>
+            @if(empty($materias) && !$soloLectura)
+                <small class="text-theme-12 block mt-1">
+                    <i class="fas fa-info-circle"></i> Configure las materias de esta unidad en Sitios > Unidades.
+                </small>
+            @endif
             @error('materia_id') <span class="text-theme-6 mt-1 block">{{ $message }}</span> @enderror
         </div>
 
         <div class="col-span-12 md:col-span-4">
             <label class="form-label text-base font-bold">Procedimiento</label>
             <select wire:model='procedimiento_id' class="form-select h-12 text-lg" {{ $soloLectura || empty($procedimientos) ? 'disabled' : '' }}>
-                <option value="">Seleccione Procedimiento...</option>
+                <option value="">{{ empty($procedimientos) ? ($materia_id ? 'No hay procedimientos para esta materia...' : 'Seleccione una Materia primero...') : 'Seleccione Procedimiento...' }}</option>
                 @foreach($procedimientos as $p)
                     <option value="{{ $p->id }}">{{ $p->nombre }}</option>
                 @endforeach
             </select>
+            @if(empty($procedimientos) && $materia_id && !$soloLectura)
+                <small class="text-theme-12 block mt-1">
+                    <i class="fas fa-info-circle"></i> Configure los procedimientos de esta materia en Gestión procesal > Procedimientos.
+                </small>
+            @endif
             @error('procedimiento_id') <span class="text-theme-6 mt-1 block">{{ $message }}</span> @enderror
         </div>
 
         <div class="col-span-12 md:col-span-4">
             <label class="form-label text-base font-bold">Asunto Específico</label>
             <select wire:model.defer='asunto_id' class="form-select h-12 text-lg" {{ $soloLectura || empty($asuntos) ? 'disabled' : '' }}>
-                <option value="">Seleccione Asunto...</option>
+                <option value="">{{ empty($asuntos) ? ($procedimiento_id ? 'No hay asuntos para este procedimiento...' : 'Seleccione un Procedimiento primero...') : 'Seleccione Asunto...' }}</option>
                 @foreach($asuntos as $a)
                     <option value="{{ $a->id }}">{{ $a->nombre }}</option>
                 @endforeach
             </select>
+            @if(empty($asuntos) && $procedimiento_id && !$soloLectura)
+                <small class="text-theme-12 block mt-1">
+                    <i class="fas fa-info-circle"></i> Configure los asuntos de este procedimiento en Gestión procesal > Asuntos.
+                </small>
+            @endif
             @error('asunto_id') <x-alert msg="{{ $message }}" /> @enderror
         </div>
 

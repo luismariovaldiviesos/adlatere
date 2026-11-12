@@ -59,12 +59,6 @@
         </div>
         <div class="col-span-12 sm:col-span-6 xl:col-span-3">
             <div class="intro-y box p-5 text-center">
-                <div class="text-3xl font-bold leading-8">{{$kpiFirmasPendientes}}</div>
-                <div class="text-base text-gray-600 mt-1">Actividades pendientes de firma</div>
-            </div>
-        </div>
-        <div class="col-span-12 sm:col-span-6 xl:col-span-3">
-            <div class="intro-y box p-5 text-center">
                 <div class="text-3xl font-bold leading-8">${{number_format($kpiPorCobrar, 2)}}</div>
                 <div class="text-base text-gray-600 mt-1">Honorarios por cobrar</div>
             </div>

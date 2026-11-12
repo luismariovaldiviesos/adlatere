@@ -48,6 +48,11 @@ public function canton()
         return $this->belongsToMany(Funcionario::class, 'funcionario_unidad');
     }
 
+    public function materias()
+    {
+        return $this->belongsToMany(Materia::class, 'materia_unidad')->withTimestamps();
+    }
+
    
 
    
