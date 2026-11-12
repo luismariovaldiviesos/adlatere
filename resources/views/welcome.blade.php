@@ -144,7 +144,7 @@
                             
                         </div>
                         <div class="main-buttons">
-                            <button id="try-free-button" class="btn btn-primary">Empieza Ahora</button>
+                            <button type="button" id="try-free-button" class="btn btn-primary">Empieza Ahora</button>
                         </div>
 
                     </div>

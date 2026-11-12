@@ -92,6 +92,9 @@ class Dashboard extends Component
     private function menusProcesales(): array
     {
         $menus = [
+            ['label' => 'provincias', 'route' => 'provincias', 'exists' => \App\Models\Provincia::exists()],
+            ['label' => 'cantones', 'route' => 'cantones', 'exists' => \App\Models\Canton::exists()],
+            ['label' => 'unidades judiciales', 'route' => 'unidades', 'exists' => \App\Models\Unidad::exists()],
             ['label' => 'materias', 'route' => 'materias', 'exists' => \App\Models\Materia::exists()],
             ['label' => 'procedimientos', 'route' => 'procedimientos', 'exists' => \App\Models\Procedimiento::exists()],
             ['label' => 'asuntos', 'route' => 'asuntos', 'exists' => \App\Models\Asunto::exists()],
@@ -101,9 +104,6 @@ class Dashboard extends Component
             ['label' => 'tipos de actividades', 'route' => 'tipoactividad', 'exists' => \App\Models\TipoActividad::exists()],
             ['label' => 'plantillas de actividades', 'route' => 'plantillas-tipos-actividad', 'exists' => \App\Models\PlantillaTipoActividad::exists()],
             ['label' => 'alertas de juicios', 'route' => 'prioridad-alertas', 'exists' => \App\Models\PrioridadAlerta::exists()],
-            ['label' => 'provincias', 'route' => 'provincias', 'exists' => \App\Models\Provincia::exists()],
-            ['label' => 'cantones', 'route' => 'cantones', 'exists' => \App\Models\Canton::exists()],
-            ['label' => 'unidades judiciales', 'route' => 'unidades', 'exists' => \App\Models\Unidad::exists()],
         ];
 
         $items = [];
@@ -201,10 +201,8 @@ class Dashboard extends Component
             ];
         }
 
-        $items = array_merge($items, $this->menusProcesales());
-
         $materiasSinUnidad = \App\Models\Materia::whereDoesntHave('unidades')->count();
-        $items[] = [
+        $itemUnidadesMaterias = [
             'label' => 'Asignar unidades a materias',
             'description' => $materiasSinUnidad > 0
                 ? $materiasSinUnidad . ' materia(s) sin unidad judicial. Asígnalas desde Sitios > Unidades para que aparezcan en carátula.'
@@ -214,7 +212,16 @@ class Dashboard extends Component
             'action' => 'Ir a Unidades',
         ];
 
-      
+        $itemsProcesales = $this->menusProcesales();
+        $indiceMaterias = collect($itemsProcesales)->search(fn ($item) => $item['url'] === route('materias'));
+
+        if ($indiceMaterias === false) {
+            $itemsProcesales[] = $itemUnidadesMaterias;
+        } else {
+            array_splice($itemsProcesales, $indiceMaterias + 1, 0, [$itemUnidadesMaterias]);
+        }
+
+        $items = array_merge($items, $itemsProcesales);
 
         $this->configTotal = count($items);
         $this->configCompletos = collect($items)->where('done', true)->count();

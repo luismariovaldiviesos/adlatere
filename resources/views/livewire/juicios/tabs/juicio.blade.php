@@ -26,17 +26,6 @@
             <input type="date" wire:model.defer='fecha_inicio' class="form-control h-12 text-lg" {{ $soloLectura ? 'disabled' : '' }}>
             @error('fecha_inicio') <x-alert msg="{{ $message }}" /> @enderror
         </div>
-           <div class="col-span-12 md:col-span-3">
-            <label class="form-label text-base font-bold">Estado Procesal</label>
-            <select wire:model.defer='estado_procesal_id' class="form-select h-12 text-lg" {{ $puedeEditarEstadoProcesal ? '' : 'disabled' }}>
-                <option value="">Seleccione Estado...</option>
-                @foreach($estados_procesales as $e)
-                    <option value="{{ $e->id }}">{{ $e->nombre }}</option>
-                @endforeach
-            </select>
-             @error('estado_procesal_id') <x-alert msg="{{ $message }}" /> @enderror
-        </div>
-
         <div class="col-span-12 md:col-span-3">
             <label class="form-label text-base font-bold">Prioridad</label>
             <select wire:model.defer='prioridad' class="form-select h-12 text-lg" {{ $puedeEditarPrioridadCaratula ? '' : 'disabled' }}>
@@ -133,11 +122,20 @@
             @error('asunto_id') <x-alert msg="{{ $message }}" /> @enderror
         </div>
 
-        <div class="col-span-12">
-            <div class="alert alert-outline-secondary flex items-center mb-2" role="alert">
-                <i data-lucide="info" class="w-4 h-4 mr-2"></i>
-                <span>El juicio se registrará inicialmente en estado: <strong>Calificación / Ingreso</strong></span>
-            </div>
+        <div class="col-span-12 md:col-span-4">
+            <label class="form-label text-base font-bold">Estado Procesal</label>
+            <select wire:model.defer='estado_procesal_id' class="form-select h-12 text-lg" {{ $puedeEditarEstadoProcesal && !empty($estados_procesales) ? '' : 'disabled' }}>
+                <option value="">{{ empty($estados_procesales) ? ($materia_id ? 'No hay estados para esta materia...' : 'Seleccione una Materia primero...') : 'Seleccione Estado...' }}</option>
+                @foreach($estados_procesales as $e)
+                    <option value="{{ $e->id }}">{{ $e->nombre }}</option>
+                @endforeach
+            </select>
+            @if(empty($estados_procesales) && $materia_id && !$soloLectura)
+                <small class="text-theme-12 block mt-1">
+                    <i class="fas fa-info-circle"></i> Configure las fases y estados de esta materia en Gestión procesal.
+                </small>
+            @endif
+            @error('estado_procesal_id') <x-alert msg="{{ $message }}" /> @enderror
         </div>
 
         @if(!$soloLectura || $puedeEditarEstadoProcesal || $puedeEditarPrioridadCaratula)

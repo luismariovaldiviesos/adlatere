@@ -57,7 +57,7 @@
     @endif
 
     <div class="text-right mt-5">
-        <button wire:click="save" class="btn btn-primary px-6 py-2.5" wire:loading.attr="disabled" wire:target="save">
+        <button type="button" wire:click="save" class="btn btn-primary px-6 py-2.5" wire:loading.attr="disabled" wire:target="save">
             <span wire:loading.remove wire:target="save">Guardar correo</span>
             <span wire:loading wire:target="save">Guardando...</span>
         </button>

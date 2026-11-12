@@ -27,7 +27,7 @@ class Unidades extends Component
             ->withCount('juicios') ;
            // ->orderBy('unidads.nombre', 'asc');
 
-        if (strlen($this->search) > 0) {
+        if (strlen((string) $this->search) > 0) {
             $searchTerm = strtolower(trim($this->search));
             $query->where(function ($q) use ($searchTerm) {
                 $q->whereRaw('LOWER(unidads.nombre) LIKE ?', ["%{$searchTerm}%"])
@@ -100,9 +100,7 @@ class Unidades extends Component
     }
     public function Store()
     {
-        sleep(1);
-
-        $this->validate(Unidad::rules($this->selected_id), Unidad::$messages);
+        $this->validate(Unidad::rules($this->selected_id, $this->canton_id), Unidad::$messages);
 
         $unidad = Unidad::updateOrCreate(
             ['id' => $this->selected_id],

@@ -40,6 +40,11 @@ class Materia extends Model
         return $this->belongsToMany(Unidad::class, 'materia_unidad')->withTimestamps();
     }
 
+    public function fases()
+    {
+        return $this->hasMany(Fase::class);
+    }
+
     public function especialidades()
     {
         return $this->hasMany(Especialidad::class);

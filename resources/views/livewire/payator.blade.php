@@ -99,7 +99,7 @@
                     <form wire:submit.prevent="register">
                         <div class="mb-3">
                             <label class="form-label">Nombre de tu Empresa / Negocio</label>
-                            <input class="form-control" type="text" wire:model="company_name" placeholder="Mi Empresa S.A."
+                            <input class="form-control" type="text" wire:model.defer="company_name" placeholder="Mi Empresa S.A."
                                 required>
                             @error('company_name') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
@@ -111,7 +111,7 @@
                         <div class="mb-3">
                             <label class="form-label">Subdominio Deseado</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" wire:model="tenant_id" placeholder="miempresa"
+                                <input type="text" class="form-control" wire:model.defer="tenant_id" placeholder="miempresa"
                                     required>
                                 <span class="input-group-text">.facta_saas.test</span>
                             </div>
@@ -120,32 +120,32 @@
 
                         <div class="mb-3">
                             <label class="form-label">Cédula / RUC</label>
-                            <input class="form-control" type="text" wire:model="ci" placeholder="1712345678" required>
+                            <input class="form-control" type="text" wire:model.defer="ci" placeholder="1712345678" required>
                             @error('ci') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Teléfono / Celular</label>
-                            <input class="form-control" type="text" wire:model="phone" placeholder="0991234567">
+                            <input class="form-control" type="text" wire:model.defer="phone" placeholder="0991234567">
                             @error('phone') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Tu Correo Electrónico</label>
-                            <input class="form-control" type="email" wire:model="email" placeholder="admin@miempresa.com"
+                            <input class="form-control" type="email" wire:model.defer="email" placeholder="admin@miempresa.com"
                                 required>
                             @error('email') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Contraseña</label>
-                            <input class="form-control" type="password" wire:model="password" required>
+                            <input class="form-control" type="password" wire:model.defer="password" required>
                             @error('password') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Confirmar Contraseña</label>
-                            <input class="form-control" type="password" wire:model="password_confirmation" required>
+                            <input class="form-control" type="password" wire:model.defer="password_confirmation" required>
                         </div>
                    
                         

@@ -1,4 +1,11 @@
 <div class="p-8 space-y-6">
+    @if(!($puedeTramitar ?? false) && isset($juicio) && $juicio)
+    <div class="alert alert-info" role="alert">
+        <i data-lucide="eye" class="w-4 h-4 mr-2"></i>
+        <strong>Vista de solo lectura:</strong> puede consultar el historial de actividades, sus documentos y descargas. Solo el abogado patrocinador puede registrar, editar o firmar actuaciones.
+    </div>
+    @endif
+
     @if($puedeTramitar ?? false)
     <div class="grid grid-cols-12 gap-6 items-end">
         
@@ -205,7 +212,7 @@
                                     @endif
                                 </div>
                             @elseif($puedeFirmar)
-                                <button wire:click="abrirModalFirmar({{ $act->id }})" class="btn btn-sm btn-warning" title="Firmar digitalmente">
+                                <button type="button" wire:click="abrirModalFirmar({{ $act->id }})" class="btn btn-sm btn-warning" title="Firmar digitalmente">
                                     <i data-lucide="signature" class="w-4 h-4 mr-1"></i> Firmar
                                 </button>
                             @elseif($esFirmable)
@@ -225,7 +232,12 @@
     @else
         <div class="alert alert-info text-center py-8 mt-8">
             <i data-lucide="info" class="w-8 h-8 mx-auto mb-2 text-gray-400"></i>
-            <p class="text-gray-500">No hay actividades registradas. Crea una arriba.</p>
+            <p class="text-gray-500">
+                No hay actividades registradas en este juicio.
+                @if($puedeTramitar ?? false)
+                    Crea una arriba.
+                @endif
+            </p>
         </div>
     @endif
 </div>
